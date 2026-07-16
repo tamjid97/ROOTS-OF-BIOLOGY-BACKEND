@@ -1,0 +1,11 @@
+model Batch {
+  id         String   @id @default(uuid())
+  userId     String
+
+  batchName  String?
+  date      String
+  classTime  String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
