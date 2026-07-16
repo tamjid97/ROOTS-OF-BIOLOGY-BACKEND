@@ -1,0 +1,16 @@
+enum Role {
+  ADMIN
+  MODERATOR
+  USER
+  STUDENT
+}
+
+enum IsApproved {
+  PENDING
+  APPROVED
+}
+
+enum Status {
+  ACTIVE
+  BANNED
+}

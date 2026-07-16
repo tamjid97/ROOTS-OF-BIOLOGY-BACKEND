@@ -1,0 +1,15 @@
+model User {
+  id             String     @id @default(uuid())
+  name           String
+  phoneNumber    String     @unique
+  email          String?    @unique
+  password       String
+  profilePicture String?
+  class          String
+  institute      String
+  role           Role       @default(USER)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  isApproved     IsApproved @default(PENDING)
+  status         Status     @default(ACTIVE)
+}
