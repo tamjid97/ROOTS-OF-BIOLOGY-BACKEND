@@ -5,6 +5,5 @@ model Result {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-
-  @@map("Result Table")
+  user User @relation(fields: [userID], references: [id])
 }

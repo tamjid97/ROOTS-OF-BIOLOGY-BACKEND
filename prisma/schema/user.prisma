@@ -12,4 +12,10 @@ model User {
   updatedAt      DateTime   @updatedAt
   isApproved     IsApproved @default(PENDING)
   status         Status     @default(ACTIVE)
+  banner         Banner[]
+  batch          Batch[]
+  pdf            PdfTable[]
+  picture        Picture[]
+  Result         Result[]
+  review         Review[]
 }
