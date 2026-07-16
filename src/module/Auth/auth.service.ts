@@ -28,7 +28,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
     });
 
     if (isUserExist) {
-      // মেসেজে email এর জায়গায় phone number লেখা হয়েছে
+      
       throw new Error("User with this phone number already exists"); 
     }
   }
@@ -56,7 +56,7 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
   const { phoneNumber, password } = payload;
   
   if (!phoneNumber) {
-    // মেসেজে email এর জায়গায় phone number লেখা হয়েছে
+    
     throw new Error("Phone number is required for login");
   }
 

@@ -13,8 +13,8 @@ export interface RegisterUserPayload {
 }
 
 
-// auth.interface.ts ফাইলে এটি আপডেট করে নিন
+
 export interface ILoginUser {
-  phoneNumber: string; // আগে এখানে email ছিল
+  phoneNumber: string; 
   password: string;
 }
