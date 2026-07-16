@@ -2,9 +2,8 @@ model PdfTable {
   id        String   @id @default(uuid())
   userID    String
   pdfUrl    String
-  title     BigInt?  
+  title     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@map("PDF Table")
+  user      User     @relation(fields: [userID], references: [id])
 }

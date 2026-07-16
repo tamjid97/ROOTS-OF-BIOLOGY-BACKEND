@@ -1,18 +1,21 @@
-
+import prismaConfig from "../prisma.config";
 import app from "./app";
+import { prisma } from "./lib/prisma";
 
 
 const PORT = process.env.PORT || 5000;
 
-async function main(){
+async function main() {
   try {
-    app.listen(PORT,()=>{
-      console.log(`server is running on port ${PORT}`);
-    })
+    await prisma.$connect();
+    console.log("db connected successfully");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   } catch (error) {
-    console.error("error server :", error)
-    process.exit(1)
+    console.error("Error starting the serve:", error);
+    await prisma.$connect();
+    process.exit(1);
   }
 }
-
-main()
+main();
