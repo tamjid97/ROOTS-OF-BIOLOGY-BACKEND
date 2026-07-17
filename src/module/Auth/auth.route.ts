@@ -12,21 +12,5 @@ const router = Router();
 
 router.post("/register", AuthController.createRegisterUser)
 router.post("/login", AuthController.loginUser)
-router.get(
-  "/me",
-  auth(Role.ADMIN, Role.MODERATOR, Role.STUDENT, Role.USER), 
-  AuthController.getMyProfile
-);
 
-router.put(
-  "/me",
-  auth(Role.ADMIN, Role.MODERATOR, Role.STUDENT, Role.USER),
-  AuthController.updateMyProfile
-);
-
-router.post(
-  '/request-moderator',
-  auth(), 
- AuthController.requestModerator
-);
 export const authRoutes = router;
