@@ -5,6 +5,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import { userRoutes } from "./module/user/user.route";
 import { adminRoutes } from "./module/Admin/admin.route";
+import { pdfRouter } from "./module/Moderator/pdfModuls/pdfModuls.route";
 
 
 const app : Application = express();
@@ -24,7 +25,8 @@ res.send("Hello world")
 })
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes)
-app.use("/api/users", adminRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/users", adminRoutes);
+app.use("/api/pdf" , pdfRouter);
 
 export default app;
