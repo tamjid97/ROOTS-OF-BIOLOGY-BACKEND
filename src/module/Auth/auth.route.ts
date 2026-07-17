@@ -23,4 +23,10 @@ router.put(
   auth(Role.ADMIN, Role.MODERATOR, Role.STUDENT, Role.USER),
   AuthController.updateMyProfile
 );
+
+router.post(
+  '/request-moderator',
+  auth(), 
+ AuthController.requestModerator
+);
 export const authRoutes = router;

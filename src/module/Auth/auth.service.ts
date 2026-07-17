@@ -116,9 +116,21 @@ const updateProfileIntoDB = async (userId: string, payload: any) => {
 };
 
 
+
+const requestModeratorIntoDB = async (userId: string) => {
+  const result = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      isApproved: 'PENDING', 
+    },
+  });
+  return result;
+};
+
 export const authService = {
   registerUserIntoDB,
   loginUserIntoDB ,
   getMYProfileFromDB,
-  updateProfileIntoDB
+  updateProfileIntoDB,
+  requestModeratorIntoDB
 }
