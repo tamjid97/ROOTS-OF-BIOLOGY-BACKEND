@@ -81,10 +81,26 @@ const updateMyProfile = catchAsync(
 );
 
 
+const requestModerator = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string; 
+
+    const result = await authService.requestModeratorIntoDB(userId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Moderator request submitted successfully",
+      data: result,
+    });
+  }
+);
+
 export const AuthController = {
   createRegisterUser,
   loginUser,
   getMyProfile,
-  updateMyProfile
+  updateMyProfile,
+  requestModerator
   
 };
