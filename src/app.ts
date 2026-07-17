@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import { userRoutes } from "./module/user/user.route";
 import { adminRoutes } from "./module/Admin/admin.route";
 import { pdfRouter } from "./module/Moderator/pdfModuls/pdfModuls.route";
+import { resultRoutes } from "./module/Moderator/ResultModule/ResultModule.route";
+import { reviewRoutes } from "./module/Moderator/ReviewModul/ReviewModul.route";
 
 
 const app : Application = express();
@@ -28,5 +30,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/users", adminRoutes);
 app.use("/api/pdf" , pdfRouter);
+app.use("/api/results", resultRoutes)
+app.use("/api/reviews", reviewRoutes)
 
 export default app;
