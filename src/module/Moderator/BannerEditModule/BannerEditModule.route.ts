@@ -6,10 +6,10 @@ const router = express.Router();
 
 router.get('/', BannerController.getAllBanners);
 
-router.post('/', auth('MODERATOR'), BannerController.createBanner);
+router.post('/', auth(), BannerController.createBanner);
 
-router.put('/:id', auth('MODERATOR'), BannerController.updateBanner);
+router.put('/:id', auth(), BannerController.updateBanner);
 
-router.delete('/:id', auth('MODERATOR'), BannerController.deleteBanner);
+router.delete('/:id', auth(), BannerController.deleteBanner);
 
 export const BannerRoutes = router;

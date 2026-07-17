@@ -8,12 +8,12 @@ const router = Router();
 
 router.get("/", BatchTimeController.getAllBatchTimes);
 
-router.post("/", auth("MODERATOR"), BatchTimeController.createBatchTime);
+router.post("/", auth(), BatchTimeController.createBatchTime);
 
 
-router.put("/:id", auth("MODERATOR"), BatchTimeController.updateBatchTime);
+router.put("/:id", auth(), BatchTimeController.updateBatchTime);
 
 
-router.delete("/:id", auth("MODERATOR"), BatchTimeController.deleteBatchTime);
+router.delete("/:id", auth(), BatchTimeController.deleteBatchTime);
 
 export const BatchTimeRoutes = router;
