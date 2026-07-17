@@ -4,7 +4,8 @@ import httpStatus from "http-status";
 import { authService } from "./auth.service";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendRespons";
-
+import config from "../../config";
+import { jwtUtils, verifyToken } from "../../utils/jwt";
 
 const createRegisterUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -52,10 +53,38 @@ const loginUser = catchAsync(
   },
 );
 
+const getMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string; 
+    const profile = await authService.getMYProfileFromDB(userId); 
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User profile fetched successfully",
+      data: profile,
+    });
+  }
+);
+
+const updateMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string; 
+    const payload = req.body;
+    const updatedUser = await authService.updateProfileIntoDB(userId, payload);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Profile updated successfully",
+      data: updatedUser,
+    });
+  }
+);
 
 
 export const AuthController = {
   createRegisterUser,
-  loginUser
+  loginUser,
+  getMyProfile,
+  updateMyProfile
   
 };
