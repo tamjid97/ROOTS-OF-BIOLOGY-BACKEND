@@ -7,12 +7,12 @@ const router = Router();
 
 router.get("/", PictureController.getAllPictures);
 
-router.post("/", auth("MODERATOR"), PictureController.createPicture);
+router.post("/", auth(), PictureController.createPicture);
 
 
-router.put("/:id", auth("MODERATOR"), PictureController.updatePicture);
+router.put("/:id", auth(), PictureController.updatePicture);
 
 
-router.delete("/:id", auth("MODERATOR"), PictureController.deletePicture);
+router.delete("/:id", auth(), PictureController.deletePicture);
 
 export const PictureRoutes = router;
