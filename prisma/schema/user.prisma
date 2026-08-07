@@ -1,5 +1,6 @@
 model User {
   id             String     @id @default(uuid())
+  studentId      String?    @unique // এটি অ্যাপ্রুভ হওয়ার পর বসবে
   name           String
   phoneNumber    String     @unique
   email          String?    @unique
@@ -10,7 +11,7 @@ model User {
   role           Role       @default(USER)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-  isApproved     IsApproved @default(PENDING)
+  isApproved     IsApproved?
   status         Status     @default(ACTIVE)
   banner         Banner[]
   batch          Batch[]

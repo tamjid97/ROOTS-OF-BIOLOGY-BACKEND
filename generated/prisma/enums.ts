@@ -21,7 +21,8 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const IsApproved = {
   PENDING: 'PENDING',
-  APPROVED: 'APPROVED'
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
 } as const
 
 export type IsApproved = (typeof IsApproved)[keyof typeof IsApproved]

@@ -108,6 +108,9 @@ export const PdfTableScalarFieldEnum = {
   userID: 'userID',
   pdfUrl: 'pdfUrl',
   title: 'title',
+  subject: 'subject',
+  className: 'className',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -130,8 +133,11 @@ export type PictureScalarFieldEnum = (typeof PictureScalarFieldEnum)[keyof typeo
 
 export const ResultScalarFieldEnum = {
   id: 'id',
+  examName: 'examName',
+  batch: 'batch',
+  examDate: 'examDate',
+  resultLink: 'resultLink',
   userID: 'userID',
-  marks: 'marks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -154,6 +160,7 @@ export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof 
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  studentId: 'studentId',
   name: 'name',
   phoneNumber: 'phoneNumber',
   email: 'email',

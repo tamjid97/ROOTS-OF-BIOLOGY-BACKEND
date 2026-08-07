@@ -8,6 +8,7 @@ enum Role {
 enum IsApproved {
   PENDING
   APPROVED
+  REJECTED
 }
 
 enum Status {
