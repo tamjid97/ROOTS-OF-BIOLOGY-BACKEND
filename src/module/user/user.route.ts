@@ -1,16 +1,9 @@
 import { Router } from "express";
-
 import { auth } from "../../Middleware/auth";
 import { Role } from "../../../generated/prisma/enums";
 import { userController } from "./user.controller";
 
-
-
-
 const router = Router();
-
-
-
 
 router.get(
   "/me",
@@ -18,8 +11,9 @@ router.get(
   userController.getMyProfile
 );
 
-router.put(
-  "/me",
+// PUT এর বদলে PATCH এবং সঠিক পাথ দেওয়া হলো
+router.patch(
+  "/update-profile",
   auth(Role.ADMIN, Role.MODERATOR, Role.STUDENT, Role.USER),
   userController.updateMyProfile
 );
@@ -29,4 +23,11 @@ router.post(
   auth(), 
   userController.requestModerator
 );
-export const userRoutes = router;
+
+router.post(
+  '/request-student',
+  auth(), 
+  userController.requestStudent
+);
+
+export const userRoutes: Router = router;

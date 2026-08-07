@@ -31,7 +31,6 @@ const updateMyProfile = catchAsync(
   }
 );
 
-
 const requestModerator = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id as string; 
@@ -47,9 +46,25 @@ const requestModerator = catchAsync(
   }
 );
 
+// নতুন যুক্ত করা হলো Student রিকোয়েস্টের জন্য
+const requestStudent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string; 
+
+    const result = await userServices.requestStudentIntoDB(userId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Student request submitted successfully",
+      data: result,
+    });
+  }
+);
 
 export const userController = {
   getMyProfile,
   requestModerator,
+  requestStudent, // Export করা হলো
   updateMyProfile
 }
