@@ -4,12 +4,11 @@ import { adminController } from "./admin.controller";
 const router = Router();
 
 router.get("/", adminController.getAllUser);
+router.get("/requests", adminController.getModeratorRequests);
 
 router.patch("/approve/:id", adminController.approveUserToStudent);
-
+router.patch("/request-status/:id", adminController.updateRequestStatus);
 router.patch("/ban/:id", adminController.banUser);
-
 router.patch("/role/:id", adminController.makeModerator);
 
-// 👇 এখানে স্পষ্টভাবে : Router টাইপ জুড়ে দে
 export const adminRoutes: Router = router;

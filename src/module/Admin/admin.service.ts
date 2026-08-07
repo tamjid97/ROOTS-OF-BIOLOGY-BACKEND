@@ -2,17 +2,18 @@
 import { IsApproved, Role } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
+// সব ইউজার নিয়ে আসার জন্য
 const getAllUserIntoDB = async () => {
   const result = await prisma.user.findMany({
     select: {
-      id: true,             // ⚠️ আইডি অবশ্যই থাকতে হবে, না হলে ফ্রন্টএন্ডে অ্যাকশন কাজ করবে না
+      id: true,
       name: true,
       email: true,
-      phoneNumber: true,    // ফোন নম্বর বা ইউজারনেম ফ্রন্টএন্ডে শো করার জন্য
+      phoneNumber: true,
       profilePicture: true,
       role: true,
-      status: true,         // স্ট্যাটাস (Active/Banned) চেক করার জন্য
-      isApproved: true,     // এপ্রুভ স্ট্যাটাস দেখার জন্য
+      status: true,
+      isApproved: true,
       createdAt: true,
     },
     orderBy: {
@@ -22,6 +23,36 @@ const getAllUserIntoDB = async () => {
   return result;
 };
 
+// মডারেটর রিকোয়েস্ট বা পেন্ডিং ইউজারদের আনার জন্য
+const getModeratorRequestsIntoDB = async () => {
+  const result = await prisma.user.findMany({
+    where: {
+      OR: [
+        { isApproved: IsApproved.PENDING },
+        { role: Role.MODERATOR }
+      ]
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phoneNumber: true,
+      profilePicture: true,
+      class: true,
+      institute: true,
+      role: true,
+      status: true,
+      isApproved: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return result;
+};
+
+// ইউজারকে স্টুডেন্ট হিসেবে এপ্রুভ করা
 const approveUserToStudentIntoDB = async (id: string) => {
   const isUserExist = await prisma.user.findUnique({
     where: { id },
@@ -46,6 +77,28 @@ const approveUserToStudentIntoDB = async (id: string) => {
   return result;
 };
 
+// ইউজার স্ট্যাটাস আপডেট করার জন্য (Approve/Reject/etc.)
+const updateRequestStatusIntoDB = async (id: string, status: string) => {
+  const isUserExist = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!isUserExist) {
+    throw new Error("User not found!");
+  }
+
+  const result = await prisma.user.update({
+    where: { id },
+    data: {
+      ...(status === "APPROVED" ? { isApproved: IsApproved.APPROVED, role: Role.MODERATOR } : {}),
+      ...(status === "BANNED" ? { status: "BANNED" } : {}),
+    },
+  });
+  
+  return result;
+};
+
+// ইউজারকে ব্যান করা
 const banUserIntoDB = async (id: string) => {
   const isUserExist = await prisma.user.findUnique({
     where: { id },
@@ -69,6 +122,7 @@ const banUserIntoDB = async (id: string) => {
   return result; 
 };
 
+// ইউজারকে মডারেটর করা
 const makeModeratorIntoDB = async (id: string) => {
   const isUserExist = await prisma.user.findUnique({
     where: { id },
@@ -98,7 +152,9 @@ const makeModeratorIntoDB = async (id: string) => {
 
 export const adminService = {
   getAllUserIntoDB,
+  getModeratorRequestsIntoDB,
   approveUserToStudentIntoDB,
+  updateRequestStatusIntoDB,
   banUserIntoDB,
   makeModeratorIntoDB,
 };
