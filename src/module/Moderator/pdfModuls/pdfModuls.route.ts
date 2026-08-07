@@ -2,16 +2,15 @@ import { Router } from "express";
 import { pdfController } from "./pdfModuls.controller";
 import { auth } from "../../../Middleware/auth";
 
-
-
-
 const route = Router();
 
-route.post("/", auth(), pdfController.postNewPdf)
+// Get All PDFs (সবার দেখার জন্য উন্মুক্ত রাখা হয়েছে, প্রয়োজন হলে auth() দিতে পারেন)
+route.get("/", pdfController.getAllPdf);
 
-route.put("/:id", auth(), pdfController.updatePdf)
+route.post("/", auth(), pdfController.postNewPdf);
 
-route.delete("/:id", auth(),pdfController.deletePdf)
+route.put("/:id", auth(), pdfController.updatePdf);
 
+route.delete("/:id", auth(), pdfController.deletePdf);
 
 export const pdfRouter = route;

@@ -1,9 +1,13 @@
 import { prisma } from "../../../lib/prisma";
 
-
-
-
-const postNewPdfIntoDB = async (userID: string, pdfUrl: string, title?: string) => {
+const postNewPdfIntoDB = async (
+  userID: string, 
+  pdfUrl: string, 
+  title?: string, 
+  subject?: string, 
+  className?: string, 
+  image?: string
+) => {
   if (!pdfUrl) {
     throw new Error("PDF URL is required!");
   }
@@ -13,14 +17,38 @@ const postNewPdfIntoDB = async (userID: string, pdfUrl: string, title?: string) 
       userID,
       pdfUrl,
       title,
+      subject,
+      className,
+      image,
     },
   });
   return result;
 };
 
+// সবগুলো PDF পাওয়ার জন্য
+const getAllPdfFromDB = async () => {
+  const result = await prisma.pdfTable.findMany({
+    include: {
+      user: {
+        select: {
+          name: true,
+          studentId: true,
+          profilePicture: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return result;
+};
 
-const updatePdfIntoDB = async (id: string, userID: string, payload: { pdfUrl?: string; title?: string }) => {
-
+const updatePdfIntoDB = async (
+  id: string, 
+  userID: string, 
+  payload: { pdfUrl?: string; title?: string; subject?: string; className?: string; image?: string }
+) => {
   const isPdfExist = await prisma.pdfTable.findUnique({
     where: { id },
   });
@@ -29,12 +57,7 @@ const updatePdfIntoDB = async (id: string, userID: string, payload: { pdfUrl?: s
     throw new Error("PDF not found!");
   }
 
-
-  if (isPdfExist.userID !== userID) {
-    throw new Error("You are not authorized to update this PDF!");
-  }
-
-
+  // মডারেটর বা অ্যাডমিন যেকোনো পিডিএফ আপডেট করতে পারার জন্য ইউজার আইডি চেক বাইপাস করা হলো
   const result = await prisma.pdfTable.update({
     where: { id },
     data: payload,
@@ -42,9 +65,7 @@ const updatePdfIntoDB = async (id: string, userID: string, payload: { pdfUrl?: s
   return result;
 };
 
-
 const deletePdfIntoDB = async (id: string, userID: string) => {
-
   const isPdfExist = await prisma.pdfTable.findUnique({
     where: { id },
   });
@@ -52,11 +73,6 @@ const deletePdfIntoDB = async (id: string, userID: string) => {
   if (!isPdfExist) {
     throw new Error("PDF not found!");
   }
-
-  if (isPdfExist.userID !== userID) {
-    throw new Error("You are not authorized to delete this PDF!");
-  }
-
 
   const result = await prisma.pdfTable.delete({
     where: { id },
@@ -66,6 +82,7 @@ const deletePdfIntoDB = async (id: string, userID: string) => {
 
 export const prfService = {
   postNewPdfIntoDB,
+  getAllPdfFromDB,
   updatePdfIntoDB,
   deletePdfIntoDB
-}
+};

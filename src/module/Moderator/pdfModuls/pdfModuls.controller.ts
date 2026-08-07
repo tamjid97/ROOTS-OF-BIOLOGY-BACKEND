@@ -1,17 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../../utils/catchAsync";
 import { sendResponse } from "../../../utils/sendRespons";
-import httpStatus  from "http-status";
+import httpStatus from "http-status";
 import { prfService } from "./pdfModuls.service";
 
-
-
 const postNewPdf = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-
   const user = (req as any).user; 
-  const { pdfUrl, title } = req.body;
+  const { pdfUrl, title, subject, className, image } = req.body; // নতুন ফিল্ডগুলো রিসিভ করা হলো
 
-  const result = await prfService.postNewPdfIntoDB(user.id, pdfUrl, title);
+  const result = await prfService.postNewPdfIntoDB(user.id, pdfUrl, title, subject, className, image);
 
   sendResponse(res, {
     success: true,
@@ -21,13 +18,24 @@ const postNewPdf = catchAsync(async (req: Request, res: Response, next: NextFunc
   });
 });
 
+// সবগুলো PDF ফেচ করার জন্য
+const getAllPdf = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const result = await prfService.getAllPdfFromDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "PDFs fetched successfully",
+    data: result,
+  });
+});
 
 const updatePdf = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params; 
   const user = (req as any).user; 
-  const { pdfUrl, title } = req.body;
+  const { pdfUrl, title, subject, className, image } = req.body; // নতুন ফিল্ডগুলো রিসিভ করা হলো
 
-  const result = await prfService.updatePdfIntoDB(id as string, user.id, { pdfUrl, title });
+  const result = await prfService.updatePdfIntoDB(id as string, user.id, { pdfUrl, title, subject, className, image });
 
   sendResponse(res, {
     success: true,
@@ -36,7 +44,6 @@ const updatePdf = catchAsync(async (req: Request, res: Response, next: NextFunct
     data: result,
   });
 });
-
 
 const deletePdf = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params; 
@@ -52,9 +59,9 @@ const deletePdf = catchAsync(async (req: Request, res: Response, next: NextFunct
   });
 });
 
-
 export const pdfController = {
   postNewPdf,
+  getAllPdf,
   updatePdf,
   deletePdf
-}
+};

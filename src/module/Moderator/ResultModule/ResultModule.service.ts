@@ -1,20 +1,33 @@
 import { prisma } from "../../../lib/prisma";
 
-
-
-const postWeeklyResultIntoDB = async (moderatorId: string, payload: any) => {
+const postNewResultIntoDB = async (userID: string, payload: any) => {
   const result = await prisma.result.create({
     data: {
-      userID: payload.studentId, 
-      marks: Number(payload.marks), 
+      ...payload,
+      userID,
     },
   });
   return result;
 };
 
+const getAllResultsFromDB = async () => {
+  const result = await prisma.result.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+  return result;
+};
 
 const updateResultIntoDB = async (id: string, payload: any) => {
-  
   const isResultExist = await prisma.result.findUnique({
     where: { id },
   });
@@ -23,7 +36,6 @@ const updateResultIntoDB = async (id: string, payload: any) => {
     throw new Error("Result not found!");
   }
 
-  
   const result = await prisma.result.update({
     where: { id },
     data: payload,
@@ -31,9 +43,7 @@ const updateResultIntoDB = async (id: string, payload: any) => {
   return result;
 };
 
-
 const deleteResultIntoDB = async (id: string) => {
-
   const isResultExist = await prisma.result.findUnique({
     where: { id },
   });
@@ -41,7 +51,6 @@ const deleteResultIntoDB = async (id: string) => {
   if (!isResultExist) {
     throw new Error("Result not found!");
   }
-
 
   const result = await prisma.result.delete({
     where: { id },
@@ -50,7 +59,8 @@ const deleteResultIntoDB = async (id: string) => {
 };
 
 export const resultService = {
-  postWeeklyResultIntoDB,
+  postNewResultIntoDB,
+  getAllResultsFromDB,
   updateResultIntoDB,
   deleteResultIntoDB,
 };
