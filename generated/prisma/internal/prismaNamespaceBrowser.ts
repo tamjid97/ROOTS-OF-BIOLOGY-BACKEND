@@ -51,7 +51,13 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-
+  Banner: 'Banner',
+  Batch: 'Batch',
+  PdfTable: 'PdfTable',
+  Picture: 'Picture',
+  Result: 'Result',
+  Review: 'Review',
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -68,4 +74,123 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const BannerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  picture: 'picture',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  UserId: 'UserId'
+} as const
+
+export type BannerScalarFieldEnum = (typeof BannerScalarFieldEnum)[keyof typeof BannerScalarFieldEnum]
+
+
+export const BatchScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  batchName: 'batchName',
+  date: 'date',
+  classTime: 'classTime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BatchScalarFieldEnum = (typeof BatchScalarFieldEnum)[keyof typeof BatchScalarFieldEnum]
+
+
+export const PdfTableScalarFieldEnum = {
+  id: 'id',
+  userID: 'userID',
+  pdfUrl: 'pdfUrl',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PdfTableScalarFieldEnum = (typeof PdfTableScalarFieldEnum)[keyof typeof PdfTableScalarFieldEnum]
+
+
+export const PictureScalarFieldEnum = {
+  id: 'id',
+  userID: 'userID',
+  pictureUrl: 'pictureUrl',
+  title: 'title',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PictureScalarFieldEnum = (typeof PictureScalarFieldEnum)[keyof typeof PictureScalarFieldEnum]
+
+
+export const ResultScalarFieldEnum = {
+  id: 'id',
+  userID: 'userID',
+  marks: 'marks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ResultScalarFieldEnum = (typeof ResultScalarFieldEnum)[keyof typeof ResultScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  rating: 'rating',
+  comment: 'comment',
+  isApproved: 'isApproved',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phoneNumber: 'phoneNumber',
+  email: 'email',
+  password: 'password',
+  profilePicture: 'profilePicture',
+  class: 'class',
+  institute: 'institute',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  isApproved: 'isApproved',
+  status: 'status'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+} as const
+
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
