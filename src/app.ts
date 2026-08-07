@@ -8,6 +8,7 @@ import { adminRoutes } from "./module/Admin/admin.route";
 import { BatchTimeRoutes } from "./module/Moderator/BatchTimeModule/BatchTimeModule.route";
 import { pdfRouter } from "./module/Moderator/pdfModuls/pdfModuls.route";
 import { resultRoutes } from "./module/Moderator/ResultModule/ResultModule.route";
+import { moderatorRoutes } from "./module/Moderator/StudentAppruv/moderator.routes";
 
 
 
@@ -35,6 +36,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/users", adminRoutes);
 app.use("/api/pdf" , pdfRouter);
 app.use("/api/results", resultRoutes)
+app.use("/api/moderator", moderatorRoutes);
 
 
 export default app;

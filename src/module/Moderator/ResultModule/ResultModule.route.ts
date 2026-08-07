@@ -16,4 +16,4 @@ router.put("/:id", auth(), resultController.updateResult);
 // Delete Result
 router.delete("/:id", auth(), resultController.deleteResult);
 
-export const resultRoutes = router;
+export const resultRoutes: Router = router;

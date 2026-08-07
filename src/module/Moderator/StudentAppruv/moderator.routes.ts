@@ -9,4 +9,4 @@ router.get("/pending-requests", moderatorController.getPendingStudents);
 // স্টুডেন্ট অ্যাপ্রুভ বা রিজেক্ট করার জন্য (PATCH)
 router.patch("/approve/:id", moderatorController.updateStudentStatus);
 
-export const moderatorRoutes = router;
+export const moderatorRoutes: Router = router;

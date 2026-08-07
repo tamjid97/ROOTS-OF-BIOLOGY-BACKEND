@@ -16,4 +16,4 @@ router.put("/:id", auth(), BatchTimeController.updateBatchTime);
 
 router.delete("/:id", auth(), BatchTimeController.deleteBatchTime);
 
-export const BatchTimeRoutes = router;
+export const BatchTimeRoutes: Router = router;

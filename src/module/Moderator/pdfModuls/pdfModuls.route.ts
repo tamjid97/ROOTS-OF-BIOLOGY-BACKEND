@@ -13,4 +13,4 @@ route.put("/:id", auth(), pdfController.updatePdf);
 
 route.delete("/:id", auth(), pdfController.deletePdf);
 
-export const pdfRouter = route;
+export const pdfRouter: Router = route;
