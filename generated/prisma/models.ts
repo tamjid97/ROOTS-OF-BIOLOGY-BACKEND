@@ -8,11 +8,4 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Banner'
-export type * from './models/Batch'
-export type * from './models/PdfTable'
-export type * from './models/Picture'
-export type * from './models/Result'
-export type * from './models/Review'
-export type * from './models/User'
 export type * from './commonInputTypes'

@@ -1,29 +1,27 @@
 import { IsApproved, Role } from "../../../generated/prisma/enums";
-import { prisma } from "../../lib/prisma"
-
-
+import { prisma } from "../../lib/prisma";
 
 const getAllUserIntoDB = async () => {
-const result = await prisma.user.findMany({
-  select :{
-    name : true,
-    email : true,
-    institute : true,
-    class: true,
-    phoneNumber : true,
-    profilePicture : true,
-    role: true,
-  },
-  orderBy : {
-    createdAt : "desc"
-  }
-});
-return result;
-}
-
+  const result = await prisma.user.findMany({
+    select: {
+      id: true,             // ⚠️ আইডি অবশ্যই থাকতে হবে, না হলে ফ্রন্টএন্ডে অ্যাকশন কাজ করবে না
+      name: true,
+      email: true,
+      phoneNumber: true,    // ফোন নম্বর বা ইউজারনেম ফ্রন্টএন্ডে শো করার জন্য
+      profilePicture: true,
+      role: true,
+      status: true,         // স্ট্যাটাস (Active/Banned) চেক করার জন্য
+      isApproved: true,     // এপ্রুভ স্ট্যাটাস দেখার জন্য
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return result;
+};
 
 const approveUserToStudentIntoDB = async (id: string) => {
-  
   const isUserExist = await prisma.user.findUnique({
     where: { id },
   });
@@ -32,11 +30,9 @@ const approveUserToStudentIntoDB = async (id: string) => {
     throw new Error("User not found!");
   }
 
-
   if (isUserExist.role === Role.STUDENT) {
     throw new Error("User is already a student!");
   }
-
 
   const result = await prisma.user.update({
     where: { id },
@@ -49,12 +45,7 @@ const approveUserToStudentIntoDB = async (id: string) => {
   return result;
 };
 
-
-
-// নিচে আমি সরাসরি string ধরে করে দিয়েছি।
-
 const banUserIntoDB = async (id: string) => {
-  
   const isUserExist = await prisma.user.findUnique({
     where: { id },
   });
@@ -63,11 +54,9 @@ const banUserIntoDB = async (id: string) => {
     throw new Error("User not found!");
   }
 
-
   if (isUserExist.status === "BANNED") { 
     throw new Error("User is already BANNED!");
   }
-
 
   const result = await prisma.user.update({
     where: { id },
@@ -76,12 +65,11 @@ const banUserIntoDB = async (id: string) => {
     },
   });
   
-
   return result; 
 };
 
-const makeModeratorIntoDB = async (id  : string) => {
-const isUserExist = await prisma.user.findUnique({
+const makeModeratorIntoDB = async (id: string) => {
+  const isUserExist = await prisma.user.findUnique({
     where: { id },
   });
 
@@ -101,17 +89,15 @@ const isUserExist = await prisma.user.findUnique({
     where: { id },
     data: {
       role: Role.MODERATOR,          
-      
     },
   });
   
   return result;
-}
-  
+};
 
 export const adminService = {
-getAllUserIntoDB,
-approveUserToStudentIntoDB,
-banUserIntoDB,
-makeModeratorIntoDB
-}
+  getAllUserIntoDB,
+  approveUserToStudentIntoDB,
+  banUserIntoDB,
+  makeModeratorIntoDB,
+};
