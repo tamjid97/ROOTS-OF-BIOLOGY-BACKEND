@@ -6,7 +6,7 @@ import { catchAsync } from "../../../utils/catchAsync";
 
 const updateStudentStatus = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { status } = req.body; // ফ্রন্টএন্ড থেকে আসা "APPROVED" বা "REJECTED" রিসিভ করা
+  const { status } = req.body; 
   
   const result = await moderatorService.updateStudentRequestStatusIntoDB(id as string, status);
 
@@ -29,7 +29,21 @@ const getPendingStudents = catchAsync(async (req: Request, res: Response, next: 
   });
 });
 
+// নতুন: শুধুমাত্র আইডি দিয়ে সিঙ্গেল স্টুডেন্টের ডিটেইলস আনার কন্ট্রোলার
+const getStudentDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const result = await moderatorService.getStudentDetailsByIdFromDB(id as string);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Student details fetched successfully",
+    data: result,
+  });
+});
+
 export const moderatorController = {
   updateStudentStatus,
   getPendingStudents,
+  getStudentDetails,
 };
