@@ -1,7 +1,7 @@
 import { IsApproved, Role } from "../../../../generated/prisma/enums";
 import { prisma } from "../../../lib/prisma";
 
-// 🌟 ১. ইউজার যখন নিজে থেকে স্টুডেন্ট হওয়ার রিকোয়েস্ট পাঠাবে
+// 🌟 ১. ইউজার যখন নিজে থেকে স্টুডেন্ট হওয়ার রিকোয়েস্ট পাঠাবে
 const requestStudentAccessIntoDB = async (userId: string) => {
   const isUserExist = await prisma.user.findUnique({
     where: { id: userId },
@@ -15,8 +15,6 @@ const requestStudentAccessIntoDB = async (userId: string) => {
     throw new Error("You are already a student!");
   }
 
-  // ইউজার রিকোয়েস্ট করলে তার isApproved স্ট্যাটাস PENDING হবে 
-  // এবং সে সরাসরি মডারেটর প্যানেলের লিস্টে চলে আসবে
   return await prisma.user.update({
     where: { id: userId },
     data: {
@@ -40,13 +38,12 @@ const updateStudentRequestStatusIntoDB = async (id: string, status: "APPROVED" |
     }
 
     try {
-      // ডাটাবেজ থেকে সর্বশেষ স্টুডেন্ট আইডিটি খুঁজে বের করা
       const lastApprovedUser = await prisma.user.findFirst({
         where: {
           isApproved: IsApproved.APPROVED,
           studentId: {
             not: null,
-          }
+          },
         },
         orderBy: {
           studentId: 'desc',
@@ -55,7 +52,6 @@ const updateStudentRequestStatusIntoDB = async (id: string, status: "APPROVED" |
 
       let nextSerial = 0;
 
-      // যদি আগে থেকে কোনো আইডি থাকে, তবে তার শেষের নাম্বারটি বের করে +1 করব
       if (lastApprovedUser && lastApprovedUser.studentId) {
         const parts = lastApprovedUser.studentId.split('-'); 
         const lastPart = parts[parts.length - 1];
@@ -73,7 +69,6 @@ const updateStudentRequestStatusIntoDB = async (id: string, status: "APPROVED" |
       const year = '26';
       const customStudentId = `${batchPrefix}-${year}-${String(nextSerialNo).padStart(3, '0')}`;
 
-      // ইউজারের রোল, অ্যাপ্রুভাল স্ট্যাটাস এবং নতুন জেনারেট হওয়া আইডি আপডেট করা
       return await prisma.user.update({
         where: { id },
         data: {
@@ -102,7 +97,6 @@ const updateStudentRequestStatusIntoDB = async (id: string, status: "APPROVED" |
 };
 
 const getPendingStudentRequestsFromDB = async () => {
-  // শুধু তারাই আসবে যাদের isApproved স্ট্যাটাস PENDING, APPROVED অথবা REJECTED (অর্থাৎ যারা রিকোয়েস্ট পাঠিয়েছে)
   const result = await prisma.user.findMany({
     where: {
       isApproved: {
@@ -117,8 +111,22 @@ const getPendingStudentRequestsFromDB = async () => {
   return result;
 };
 
+// নতুন: নির্দিষ্ট আইডি দিয়ে স্টুডেন্টের তথ্য খোঁজার ফাংশন
+const getStudentDetailsByIdFromDB = async (id: string) => {
+  const result = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!result) {
+    throw new Error("Student not found!");
+  }
+
+  return result;
+};
+
 export const moderatorService = {
-  requestStudentAccessAction: requestStudentAccessIntoDB, // রাউটে ব্যবহার করার জন্য
+  requestStudentAccessAction: requestStudentAccessIntoDB,
   updateStudentRequestStatusIntoDB,
   getPendingStudentRequestsFromDB,
+  getStudentDetailsByIdFromDB,
 };
